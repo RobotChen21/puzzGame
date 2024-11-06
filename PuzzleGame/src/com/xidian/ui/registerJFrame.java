@@ -67,7 +67,10 @@ public class registerJFrame extends JFrame implements MouseListener {
         String passwordInput = new String(password.getPassword());
         String rePasswordInput = new String(rePassword.getPassword());
         if(obj == registerButton){
-            if(!passwordInput.equals(rePasswordInput)){
+            if (usernameInput.isEmpty() || passwordInput.isEmpty() || rePasswordInput.isEmpty()){
+                new MyJDialog("输入框不能为空");
+            }
+            else if(!passwordInput.equals(rePasswordInput)){
                 new MyJDialog("两次密码不一致");
             } else if(contains(usernameInput)){
                 LoginJFrame.allUser.add(new User(usernameInput,passwordInput));
