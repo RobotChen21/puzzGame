@@ -3,8 +3,17 @@ package com.xidian.domin;
 import java.io.Serializable;
 
 public class User implements Serializable{
-    String userName;
-    String passWord;
+    private String userName;
+    private String passWord;
+    private GameInfo[] gameInfos = new GameInfo[5];
+
+    public GameInfo[] getGameInfos() {
+        return gameInfos;
+    }
+
+    public void setGameInfos(GameInfo[] gameInfos) {
+        this.gameInfos = gameInfos;
+    }
 
     public User() {
     }

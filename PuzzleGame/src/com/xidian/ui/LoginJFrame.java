@@ -141,7 +141,7 @@ public class LoginJFrame extends JFrame implements MouseListener{
                 new MyJDialog("验证码错误");
             } else if (contains(UserInfo)) {
                 setVisible(false);
-                new gameJFrame();
+                new gameJFrame(UserInfo);
             }else {
                 new MyJDialog("用户名或者密码错误");
             }

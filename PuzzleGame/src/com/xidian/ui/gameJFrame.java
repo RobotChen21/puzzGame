@@ -1,5 +1,8 @@
 package com.xidian.ui;
 
+import com.xidian.domin.GameInfo;
+import com.xidian.domin.User;
+
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
@@ -17,6 +20,7 @@ public class gameJFrame extends JFrame implements KeyListener, ActionListener {
     //空白图像的坐标
     private int x ;
     private int y ;
+    private User user;
     private String[] pathArr = {
             "PuzzleGame\\image\\animal\\animal",
             "PuzzleGame\\image\\girl\\girl",
@@ -39,7 +43,10 @@ public class gameJFrame extends JFrame implements KeyListener, ActionListener {
     JMenuItem girlItem = new JMenuItem("美女");
     JMenuItem animalItem = new JMenuItem("动物");
     JMenuItem sportItem = new JMenuItem("运动");
-    public gameJFrame(){
+    JMenuItem[] saveItem = new JMenuItem[5];
+    JMenuItem[] loadItem = new JMenuItem[5];
+    public gameJFrame(User user){
+        this.user = user;
         initJFrame();//初始化界面
 
         initJMenuBar();//初始化菜单
@@ -125,7 +132,8 @@ public class gameJFrame extends JFrame implements KeyListener, ActionListener {
         JMenu aboutJMenu = new JMenu("关于我们");
 
         JMenu replaceItem = new JMenu("更换图片");
-
+        JMenu saveJMenu = new JMenu("存档");
+        JMenu loadJMenu = new JMenu("读档");
 
         replayItem.addActionListener(this);
         reLoginItem.addActionListener(this);
@@ -148,7 +156,18 @@ public class gameJFrame extends JFrame implements KeyListener, ActionListener {
         replaceItem.add(sportItem);
 
         aboutJMenu.add(accountItem);
-
+        for (int i = 0; i < 5; i++) {
+            saveItem[i] = new JMenuItem();
+            loadItem[i] = new JMenuItem();
+            saveItem[i].setText("存档"+i+"(空)");
+            loadItem[i].setText("读档"+i+"(空)");
+            saveItem[i].addActionListener(this);
+            loadItem[i].addActionListener(this);
+            saveJMenu.add(saveItem[i]);
+            loadJMenu.add(loadItem[i]);
+        }
+        functionJMenu.add(saveJMenu);
+        functionJMenu.add(loadJMenu);
         jMenuBar.add(functionJMenu);
         jMenuBar.add(aboutJMenu);
 
@@ -291,6 +310,16 @@ public class gameJFrame extends JFrame implements KeyListener, ActionListener {
             initData();
             count = -1;
             initImage();
+        } else if (obj == saveItem[0] || obj == saveItem[1] || obj == saveItem[2] || obj == saveItem[3] || obj == saveItem[4]) {
+            JMenuItem item = (JMenuItem)obj;
+            int index = item.getText().charAt(2)-'0';
+            GameInfo[] gameInfos = user.getGameInfos();
+            gameInfos[index] = new GameInfo(x,y,count,path,arrRandom);
+
+
+        } else if (obj == loadItem[0] || obj == loadItem[1] || obj == loadItem[2] || obj == loadItem[3] || obj == loadItem[4]) {
+            JMenuItem item = (JMenuItem)obj;
+            int index = item.getText().charAt(2)-'0';
         }
 
     }
