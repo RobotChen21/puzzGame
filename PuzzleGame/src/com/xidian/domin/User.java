@@ -1,6 +1,8 @@
 package com.xidian.domin;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
     String userName;
     String passWord;
 

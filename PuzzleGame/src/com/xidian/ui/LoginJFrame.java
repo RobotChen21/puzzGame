@@ -3,16 +3,17 @@ package com.xidian.ui;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.*;
 import java.util.ArrayList;
 import com.xidian.domin.User;
 import com.xidian.util.CodeUtil;
 
 public class LoginJFrame extends JFrame implements MouseListener {
-    static ArrayList<User> allUser = new ArrayList<User>();
-    static {
-        allUser.add(new User("zhangsan","123456"));
-        allUser.add(new User("lisi","123456"));
-    }
+    static ArrayList<User> allUser;
+//    static {
+//        allUser.add(new User("zhangsan","123456"));
+//        allUser.add(new User("lisi","123456"));
+//    }
     private JButton loginButton = new JButton(new ImageIcon("PuzzleGame/image/login/登录按钮.png"));
     private JButton registerButton = new JButton(new ImageIcon("PuzzleGame/image/login/注册按钮.png"));
     private String codeStr = CodeUtil.getCode();               //CodeUtil.getCode();
@@ -23,22 +24,43 @@ public class LoginJFrame extends JFrame implements MouseListener {
     private JButton showPassword = new JButton(new ImageIcon("PuzzleGame/image/login/显示密码.png"));
     private char defaultEchoChar = password.getEchoChar();
     private registerJFrame registerJF;
-    public LoginJFrame(){
+    public LoginJFrame() throws IOException, ClassNotFoundException {
         registerJF = new registerJFrame(this);
         registerJF.setVisible(false);
+        getUserInfo();
         initView();
         initJFrame();
     }
 
+    private void getUserInfo() throws IOException, ClassNotFoundException {
+        File file = new File("D:\\OneDrive - stu.xidian.edu.cn\\桌面\\各种文件\\MyCode\\JAVALearn\\Game\\PuzzleGame\\src\\com\\xidian\\domin\\User.txt");
+        if (file.length() == 0) {
+            // 文件为空，初始化一个新的 ArrayList
+            allUser = new ArrayList<>();
+            System.out.println("File is empty. Initialized allUser as an empty list.");
+        } else {
+            try (ObjectInputStream userInfo = new ObjectInputStream(new FileInputStream(file))) {
+                Object obj = userInfo.readObject();
+                if (obj instanceof ArrayList<?>) {
+                    allUser = (ArrayList<User>) obj;
+                } else {
+                    throw new ClassCastException("File does not contain a valid ArrayList<User>");
+                }
+            } catch (EOFException e) {
+                System.out.println("Reached end of file unexpectedly. Initializing an empty list.");
+                allUser = new ArrayList<>();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+                allUser = new ArrayList<>(); // 初始化为一个空列表，以防读取失败
+            }
+        }
+    }
+
     private void initView() {
-
-
-
         //添加用户文字
         JLabel usernameText = new JLabel(new ImageIcon("PuzzleGame/image/login/用户名.png"));
         usernameText.setBounds(116,135,47,17);
         getContentPane().add(usernameText);
-
 
         username.setBounds(195,134,200,30);
         getContentPane().add(username);
@@ -46,10 +68,6 @@ public class LoginJFrame extends JFrame implements MouseListener {
         JLabel passwordText = new JLabel(new ImageIcon("PuzzleGame/image/login/密码.png"));
         passwordText.setBounds(130,195,32,16);
         getContentPane().add(passwordText);
-
-
-
-
 
         password.setBounds(195,195,200,30);
         getContentPane().add(password);

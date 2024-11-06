@@ -5,6 +5,9 @@ import com.xidian.domin.User;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class registerJFrame extends JFrame implements MouseListener {
     private JTextField username = new JTextField();
@@ -74,6 +77,14 @@ public class registerJFrame extends JFrame implements MouseListener {
                 new MyJDialog("两次密码不一致");
             } else if(contains(usernameInput)){
                 LoginJFrame.allUser.add(new User(usernameInput,passwordInput));
+                try {
+                    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("D:\\OneDrive - stu.xidian.edu.cn\\桌面\\各种文件\\MyCode\\JAVALearn\\Game\\PuzzleGame\\src\\com\\xidian\\domin\\User.txt",false));
+                    oos.writeObject(LoginJFrame.allUser);
+                    oos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println("对象无法写回");
+                }
                 new MyJDialog("注册成功");
                 setVisible(false);
                 username.setText("");

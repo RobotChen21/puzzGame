@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.Random;
 import java.util.Vector;
 
@@ -197,26 +198,30 @@ public class gameJFrame extends JFrame implements KeyListener, ActionListener {
             arrRandom[x][y-1] = 0;
             y--;
             System.out.println("左");
-
+            initImage();
         } else if(code == 38){//向上移动
             if(x == 0) return;
             arrRandom[x][y] = arrRandom[x-1][y];
             arrRandom[x-1][y] = 0;
             x--;
             System.out.println("上");
+            initImage();
         } else if(code == 39){//向右移动
             if(y == 3) return;
             arrRandom[x][y] = arrRandom[x][y+1];
             arrRandom[x][y+1] = 0;
             y++;
             System.out.println("右");
+            initImage();
         } else if(code == 40){//向下移动
             if(x == 3) return;
             arrRandom[x][y] = arrRandom[x+1][y];
             arrRandom[x+1][y] = 0;
             x++;
             System.out.println("下");
+            initImage();
         } else if (code == 65) {
+            count--;
             initImage();
         } else if (code == 87) {
             arrRandom = new int[][]{
@@ -225,8 +230,8 @@ public class gameJFrame extends JFrame implements KeyListener, ActionListener {
                     {9,10,11,12},
                     {13,14,15,0}
             };
+            initImage();
         }
-        initImage();
     }
     public boolean vector(){
         for (int i = 0; i < 4; i++) {
@@ -249,7 +254,13 @@ public class gameJFrame extends JFrame implements KeyListener, ActionListener {
             initImage();
         } else if (obj == reLoginItem) {
             setVisible(false);
-            new LoginJFrame();
+            try {
+                new LoginJFrame();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         } else if (obj == closeItem) {
             System.exit(0);
         } else if (obj == accountItem) {
