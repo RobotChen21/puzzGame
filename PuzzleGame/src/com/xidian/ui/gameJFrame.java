@@ -62,7 +62,7 @@ public class gameJFrame extends JFrame implements KeyListener, ActionListener {
         }
         count++;
         JLabel countText = new JLabel("步数："+count);
-        countText.setBounds(20,20,50,30);
+        countText.setBounds(20,20,80,30);
         getContentPane().add(countText);
         //先加载的图片在上方，后加载的图片塞在下方
         for(int i = 0; i < 4; i++){

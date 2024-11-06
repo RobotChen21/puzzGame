@@ -78,7 +78,7 @@ public class registerJFrame extends JFrame implements MouseListener {
             } else if(contains(usernameInput)){
                 LoginJFrame.allUser.add(new User(usernameInput,passwordInput));
                 try {
-                    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("D:\\OneDrive - stu.xidian.edu.cn\\桌面\\各种文件\\MyCode\\JAVALearn\\Game\\PuzzleGame\\src\\com\\xidian\\domin\\User.txt",false));
+                    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("PuzzleGame/src/com/xidian/domin/User.txt",false));
                     oos.writeObject(LoginJFrame.allUser);
                     oos.close();
                 } catch (IOException e) {

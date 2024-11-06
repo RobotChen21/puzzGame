@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import com.xidian.domin.User;
 import com.xidian.util.CodeUtil;
 
-public class LoginJFrame extends JFrame implements MouseListener {
+public class LoginJFrame extends JFrame implements MouseListener{
     static ArrayList<User> allUser;
 //    static {
 //        allUser.add(new User("zhangsan","123456"));
@@ -33,7 +33,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
     }
 
     private void getUserInfo() throws IOException, ClassNotFoundException {
-        File file = new File("D:\\OneDrive - stu.xidian.edu.cn\\桌面\\各种文件\\MyCode\\JAVALearn\\Game\\PuzzleGame\\src\\com\\xidian\\domin\\User.txt");
+        File file = new File("PuzzleGame/src/com/xidian/domin/User.txt");
         if (file.length() == 0) {
             // 文件为空，初始化一个新的 ArrayList
             allUser = new ArrayList<>();
@@ -108,7 +108,6 @@ public class LoginJFrame extends JFrame implements MouseListener {
         background.setBounds(0,0,470,390);
         getContentPane().add(background);
 
-
     }
 
     private void initJFrame() {
@@ -118,6 +117,8 @@ public class LoginJFrame extends JFrame implements MouseListener {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);//置顶
         setVisible(true);
+        setFocusable(true);
+        setFocusTraversalKeysEnabled(false);
     }
 
 
