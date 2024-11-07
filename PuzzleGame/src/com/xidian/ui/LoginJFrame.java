@@ -9,7 +9,9 @@ import com.xidian.domin.User;
 import com.xidian.util.CodeUtil;
 
 public class LoginJFrame extends JFrame implements MouseListener{
-    static ArrayList<User> allUser;
+
+
+    ArrayList<User> allUser;
 //    static {
 //        allUser.add(new User("zhangsan","123456"));
 //        allUser.add(new User("lisi","123456"));
@@ -30,6 +32,10 @@ public class LoginJFrame extends JFrame implements MouseListener{
         getUserInfo();
         initView();
         initJFrame();
+    }
+
+    public ArrayList<User> getAllUser() {
+        return allUser;
     }
 
     private void getUserInfo() throws IOException, ClassNotFoundException {
@@ -127,8 +133,8 @@ public class LoginJFrame extends JFrame implements MouseListener{
         String usernameInput = username.getText();
         String passwordInput = new String(password.getPassword());
         String codeInput = code.getText();
-        User UserInfo = new User(usernameInput,passwordInput);
         Object obj = mouseEvent.getSource();
+        int flag;
         if(obj == rightCode){
             codeStr = CodeUtil.getCode();
             rightCode.setText(codeStr);
@@ -139,9 +145,9 @@ public class LoginJFrame extends JFrame implements MouseListener{
                 new MyJDialog("用户名或密码不能为空");
             } else if (!codeInput.equalsIgnoreCase(rightCode.getText())) {
                 new MyJDialog("验证码错误");
-            } else if (contains(UserInfo)) {
+            } else if ((flag = contain(usernameInput,passwordInput)) != -1) {
                 setVisible(false);
-                new gameJFrame(UserInfo);
+                new gameJFrame(allUser.get(flag),this);
             }else {
                 new MyJDialog("用户名或者密码错误");
             }
@@ -154,6 +160,16 @@ public class LoginJFrame extends JFrame implements MouseListener{
             registerJF.setVisible(true);
 //            new registerJFrame(this);
         }
+    }
+
+    private int contain(String usernameInput, String passwordInput) {
+        for (int i = 0; i < allUser.size(); i++) {
+            User temp = allUser.get(i);
+            if(usernameInput.equals(temp.getUserName())&&passwordInput.equals(temp.getPassWord())){
+                return i;
+            }
+        }
+        return -1;
     }
 
     private boolean contains(User userInfo) {

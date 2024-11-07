@@ -76,10 +76,10 @@ public class registerJFrame extends JFrame implements MouseListener {
             else if(!passwordInput.equals(rePasswordInput)){
                 new MyJDialog("两次密码不一致");
             } else if(contains(usernameInput)){
-                LoginJFrame.allUser.add(new User(usernameInput,passwordInput));
+                loginJFrame.getAllUser().add(new User(usernameInput,passwordInput));
                 try {
                     ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("PuzzleGame/src/com/xidian/domin/User.txt",false));
-                    oos.writeObject(LoginJFrame.allUser);
+                    oos.writeObject(loginJFrame.getAllUser());
                     oos.close();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -102,8 +102,8 @@ public class registerJFrame extends JFrame implements MouseListener {
     }
 
     private boolean contains(String userInfo) {
-        for (int i = 0; i < LoginJFrame.allUser.size(); i++) {
-            if(LoginJFrame.allUser.get(i).getUserName().equals(userInfo)){
+        for (int i = 0; i < loginJFrame.getAllUser().size(); i++) {
+            if(loginJFrame.getAllUser().get(i).getUserName().equals(userInfo)){
                 return false;
             }
         }

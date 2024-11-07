@@ -1,10 +1,12 @@
 package com.xidian.domin;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
 public class GameInfo implements Serializable {
+
     private int x;
     private int y;
     private int count;
@@ -67,7 +69,7 @@ public class GameInfo implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GameInfo gameInfo = (GameInfo) o;
-        return x == gameInfo.x && y == gameInfo.y && count == gameInfo.count && Objects.equals(path, gameInfo.path) && Arrays.equals(arrRandom, gameInfo.arrRandom);
+        return x == gameInfo.x && y == gameInfo.y && count == gameInfo.count && Objects.equals(path, gameInfo.path) && Arrays.deepEquals(arrRandom, gameInfo.arrRandom);
     }
 
     @Override

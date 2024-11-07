@@ -10,7 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Vector;
 
@@ -35,9 +38,13 @@ public class gameJFrame extends JFrame implements KeyListener, ActionListener {
             {9,10,11,12},
             {13,14,15,0}
     };
+    private LoginJFrame loginJFrame;
+    ArrayList<User> userArrayList;
 
     JMenuItem replayItem = new JMenuItem("重新游戏");
     JMenuItem reLoginItem = new JMenuItem("重新登录");
+    JMenu saveJMenu = new JMenu("存档");
+    JMenu loadJMenu = new JMenu("读档");
     JMenuItem closeItem = new JMenuItem("关闭游戏");
     JMenuItem accountItem = new JMenuItem("公众号");
     JMenuItem girlItem = new JMenuItem("美女");
@@ -45,8 +52,10 @@ public class gameJFrame extends JFrame implements KeyListener, ActionListener {
     JMenuItem sportItem = new JMenuItem("运动");
     JMenuItem[] saveItem = new JMenuItem[5];
     JMenuItem[] loadItem = new JMenuItem[5];
-    public gameJFrame(User user){
+    public gameJFrame(User user,LoginJFrame loginJFrame){
         this.user = user;
+        this.loginJFrame = loginJFrame;
+        userArrayList = loginJFrame.getAllUser();
         initJFrame();//初始化界面
 
         initJMenuBar();//初始化菜单
@@ -132,8 +141,7 @@ public class gameJFrame extends JFrame implements KeyListener, ActionListener {
         JMenu aboutJMenu = new JMenu("关于我们");
 
         JMenu replaceItem = new JMenu("更换图片");
-        JMenu saveJMenu = new JMenu("存档");
-        JMenu loadJMenu = new JMenu("读档");
+
 
         replayItem.addActionListener(this);
         reLoginItem.addActionListener(this);
@@ -159,13 +167,14 @@ public class gameJFrame extends JFrame implements KeyListener, ActionListener {
         for (int i = 0; i < 5; i++) {
             saveItem[i] = new JMenuItem();
             loadItem[i] = new JMenuItem();
-            saveItem[i].setText("存档"+i+"(空)");
-            loadItem[i].setText("读档"+i+"(空)");
+
             saveItem[i].addActionListener(this);
             loadItem[i].addActionListener(this);
             saveJMenu.add(saveItem[i]);
             loadJMenu.add(loadItem[i]);
         }
+        textFresh();
+
         functionJMenu.add(saveJMenu);
         functionJMenu.add(loadJMenu);
         jMenuBar.add(functionJMenu);
@@ -173,6 +182,13 @@ public class gameJFrame extends JFrame implements KeyListener, ActionListener {
 
         setJMenuBar(jMenuBar);
     }
+    private void textFresh(){
+        for (int i = 0; i < 5; i++) {
+            saveItem[i].setText("存档"+i+"("+user.getGameInfos()[i].getCount()+"步)");
+            loadItem[i].setText("读档"+i+"("+user.getGameInfos()[i].getCount()+"步)");
+        }
+    }
+
 
     private void initJFrame() {
         setSize(603,680);
@@ -311,15 +327,37 @@ public class gameJFrame extends JFrame implements KeyListener, ActionListener {
             count = -1;
             initImage();
         } else if (obj == saveItem[0] || obj == saveItem[1] || obj == saveItem[2] || obj == saveItem[3] || obj == saveItem[4]) {
+            int indexUser = userArrayList.indexOf(user);
+            System.out.println(indexUser);
             JMenuItem item = (JMenuItem)obj;
             int index = item.getText().charAt(2)-'0';
             GameInfo[] gameInfos = user.getGameInfos();
             gameInfos[index] = new GameInfo(x,y,count,path,arrRandom);
-
+            textFresh();
+//            item.setText("读档"+index+"("+count+"步)");
+//            userArrayList.set(indexUser,user);
+            try {
+                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("PuzzleGame/src/com/xidian/domin/User.txt"));
+                oos.writeObject(loginJFrame.getAllUser());
+                oos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("对象无法写入文件");
+            }
 
         } else if (obj == loadItem[0] || obj == loadItem[1] || obj == loadItem[2] || obj == loadItem[3] || obj == loadItem[4]) {
             JMenuItem item = (JMenuItem)obj;
             int index = item.getText().charAt(2)-'0';
+            GameInfo[] gameInfos = user.getGameInfos();
+            GameInfo gameInfo = gameInfos[index];
+            x = gameInfo.getX();
+            y = gameInfo.getY();
+            count = gameInfo.getCount();
+            path = gameInfo.getPath();
+            arrRandom = gameInfo.getArrRandom();
+            count--;
+            initImage();
+//            initSaveFile();
         }
 
     }
