@@ -11,9 +11,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Random;
 import java.util.Vector;
 
@@ -300,7 +302,16 @@ public class gameJFrame extends JFrame implements KeyListener, ActionListener {
             System.exit(0);
         } else if (obj == accountItem) {
             JDialog jDialog = new JDialog();
-            JLabel jLabel = new JLabel(new ImageIcon("PuzzleGame/image/about.png"));
+            Properties prop = new Properties();
+            try {
+                FileReader fr = new FileReader("PuzzleGame/config.properties");
+                prop.load(fr);
+                fr.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("无法加载广告图片");
+            }
+            JLabel jLabel = new JLabel(new ImageIcon((String) prop.get("account")));
             jLabel.setBounds(0,0,258,258);
             jDialog.getContentPane().add(jLabel);
             jDialog.setSize(344,344);
